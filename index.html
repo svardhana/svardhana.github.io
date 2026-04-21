@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vardhana Lab · MSK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:    #1a2a3a;
+    --navy-md: #243447;
+    --navy-lt: #2e4260;
+    --gold:    #b89555;
+    --gold-lt: #d4ae72;
+    --cream:   #f7f4ef;
+    --white:   #ffffff;
+    --gray:    #6b7280;
+    --gray-lt: #e8e4dd;
+    --text:    #1a2232;
+    --serif:   'EB Garamond', Georgia, serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+    --nav-h:   68px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--text); background: var(--white); font-size: 16px; line-height: 1.7; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; z-index: 100;
+    border-bottom: 1px solid rgba(184,149,85,0.2);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
+  .nav-logo-icon { height: 36px; width: auto; flex-shrink: 0; }
+  .nav-logo-text { font-family: var(--serif); font-size: 1.15rem; color: var(--white); letter-spacing: 0.02em; line-height: 1.2; }
+  .nav-logo-text span { display: block; font-size: 0.7rem; font-family: var(--sans); font-weight: 300; color: rgba(255,255,255,0.5); letter-spacing: 0.12em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.75); padding-bottom: 2px; border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .nav-links a:hover { color: var(--white); border-bottom-color: var(--gold-lt); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; align-items: center; background: var(--navy); position: relative; overflow: hidden; padding-top: var(--nav-h); }
+  .hero-bg-image { position: absolute; inset: 0; background-image: url('splash-2.png'); background-size: cover; background-position: center; opacity: 0.12; }
+  .hero-bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 30% 50%, rgba(26,42,58,0.88) 0%, rgba(26,42,58,0.5) 60%, transparent 100%), radial-gradient(ellipse 40% 50% at 20% 80%, rgba(184,149,85,0.06) 0%, transparent 60%); }
+  .hero-bg-overlay::after { content: ''; position: absolute; top: 0; bottom: 0; right: 38%; width: 1px; background: linear-gradient(to bottom, transparent, rgba(184,149,85,0.22) 30%, rgba(184,149,85,0.22) 70%, transparent); }
+  .hero-inner { position: relative; max-width: 1100px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; z-index: 1; }
+  .hero-text { color: var(--white); }
+  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); font-weight: 400; margin-bottom: 20px; font-family: var(--sans); }
+  .hero-title { font-family: var(--serif); font-size: clamp(2.4rem, 4vw, 3.6rem); font-weight: 400; line-height: 1.18; color: var(--white); margin-bottom: 28px; letter-spacing: -0.01em; }
+  .hero-title em { color: var(--gold-lt); }
+  .hero-subtitle { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.75; max-width: 420px; margin-bottom: 40px; }
+  .hero-cta { display: inline-flex; gap: 16px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 12px 28px; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; cursor: pointer; }
+  .btn-gold { background: var(--gold); color: var(--white); border: 1.5px solid var(--gold); }
+  .btn-gold:hover { background: var(--gold-lt); border-color: var(--gold-lt); }
+  .btn-outline { background: transparent; color: rgba(255,255,255,0.8); border: 1.5px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { color: var(--white); border-color: rgba(255,255,255,0.7); }
+  .hero-visual { display: flex; align-items: center; justify-content: center; }
+
+  /* Featured publication card */
+  .hero-pub-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(184,149,85,0.35);
+    border-radius: 4px;
+    padding: 32px 36px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    backdrop-filter: blur(4px);
+  }
+
+  .hero-pub-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(184,149,85,0.25);
+  }
+
+  /* Journal logo slot — replace placeholder with <img> */
+  .hero-pub-journal-logo {
+    width: 120px;
+    height: 60px;
+    border-radius: 3px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-pub-journal-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Fallback text if no logo image */
+  .hero-pub-journal-name-fallback {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-lt);
+    font-weight: 500;
+    font-family: var(--sans);
+    text-align: center;
+    line-height: 1.3;
+    padding: 4px 6px;
+  }
+
+  .hero-pub-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-lt);
+    font-weight: 500;
+    font-family: var(--sans);
+  }
+
+  .hero-pub-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--white);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .hero-pub-authors {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .hero-pub-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-family: var(--sans);
+    color: var(--gold-lt);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(184,149,85,0.4);
+    padding-bottom: 2px;
+    align-self: flex-start;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .hero-pub-link:hover {
+    color: var(--white);
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  .hero-pub-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--sans);
+    font-weight: 400;
+  }
+
+  /* SECTION SHARED */
+  section { padding: 100px 48px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 16px; font-family: var(--sans); }
+  .section-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; color: var(--navy); line-height: 1.25; margin-bottom: 24px; max-width: 700px; }
+  .section-intro { font-size: 1.05rem; color: var(--gray); line-height: 1.8; max-width: 680px; margin-bottom: 64px; font-weight: 300; }
+  .gold-divider { width: 48px; height: 2px; background: var(--gold); margin-bottom: 40px; }
+
+  /* RESEARCH CARDS */
+  #research { background: var(--white); }
+  .research-list { display: flex; flex-direction: column; border-top: 1px solid var(--gray-lt); }
+  .research-card { display: grid; grid-template-columns: 230px 1fr; border-bottom: 1px solid var(--gray-lt); transition: background 0.2s; }
+  .research-card:hover { background: var(--cream); }
+  .research-card-left { border-right: 1px solid var(--gray-lt); background: rgba(248,245,240,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; min-height: 160px; }
+  .research-card-img { width: 190.5405px; height: 150px; object-fit: cover; border-radius: 2px; display: block; }
+  .research-img-placeholder { width: 190.5405px; height: 150px; background: var(--gray-lt); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  .research-img-placeholder svg { width: 52px; height: 52px; }
+  .research-card-number { font-family: var(--serif); font-size: 0.8rem; color: var(--gray); letter-spacing: 0.1em; user-select: none; }
+  .research-card-right { padding: 32px 40px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+  .research-card-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; color: var(--navy); line-height: 1.3; }
+  .research-card-text { font-size: 0.9rem; color: var(--gray); line-height: 1.75; font-weight: 300; max-width: 600px; }
+  .research-card-paper { display: flex; align-items: center; gap: 9px; margin-top: 4px; }
+  .paper-icon { flex-shrink: 0; width: 17px; height: 17px; opacity: 0.6; }
+  .research-card-paper a { font-size: 0.8rem; color: var(--gold); text-decoration: none; font-weight: 400; border-bottom: 1px solid rgba(184,149,85,0.3); padding-bottom: 1px; transition: border-color 0.2s, color 0.2s; }
+  .research-card-paper a:hover { color: var(--navy); border-color: var(--navy); }
+
+  /* TECHNIQUES */
+  .techniques-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .technique-item { display: flex; flex-direction: column; gap: 12px; padding: 28px; background: var(--white); border: 1px solid var(--gray-lt); border-top: 3px solid var(--navy); border-radius: 2px; transition: box-shadow 0.2s; }
+  .technique-item:hover { box-shadow: 0 4px 20px rgba(26,42,58,0.08); }
+  .technique-icon { width: 75px; height: 75px; flex-shrink: 0; }
+  .technique-icon-img { width: 75px; height: 75px; object-fit: contain; }
+  .technique-name { font-family: var(--serif); font-size: 1.1rem; color: var(--navy); font-weight: 500; }
+  .technique-desc { font-size: 0.85rem; color: var(--gray); font-weight: 300; line-height: 1.65; }
+
+  /* PUBLICATIONS */
+  #publications { background: var(--cream); }
+  .pub-list { display: flex; flex-direction: column; }
+  .pub-item { display: grid; grid-template-columns: auto 1fr auto; gap: 0 32px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--gray-lt); text-decoration: none; color: inherit; }
+  .pub-item:first-child { border-top: 1px solid var(--gray-lt); }
+  .pub-item:hover .pub-title { color: var(--gold); }
+  .pub-year { font-family: var(--serif); font-size: 0.9rem; color: var(--gray); white-space: nowrap; padding-top: 2px; min-width: 44px; }
+  .pub-journal { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 4px; font-family: var(--sans); }
+  .pub-title { font-family: var(--serif); font-size: 1.05rem; color: var(--navy); line-height: 1.4; margin-bottom: 6px; font-weight: 400; transition: color 0.2s; }
+  .pub-authors { font-size: 0.85rem; color: var(--gray); font-weight: 300; }
+  .pub-arrow { color: var(--gray); font-size: 1rem; padding-top: 6px; opacity: 0; transition: opacity 0.2s; }
+  .pub-item:hover .pub-arrow { opacity: 1; color: var(--gold); }
+  .pub-more { display: inline-flex; align-items: center; gap: 8px; margin-top: 40px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); text-decoration: none; font-weight: 500; border-bottom: 1.5px solid var(--navy); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; }
+  .pub-more:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* NEWS */
+  #news { background: var(--white); }
+  .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .news-card { text-decoration: none; color: inherit; display: block; background: var(--white); border: 1px solid var(--gray-lt); border-radius: 2px; overflow: hidden; transition: box-shadow 0.2s; }
+  .news-card:hover { box-shadow: 0 4px 24px rgba(26,42,58,0.1); }
+  .news-card:hover .news-headline { color: var(--gold); }
+  .news-image { width: 100%; aspect-ratio: 16/9; object-fit: contain; background: var(--gray-lt); display: block; }
+  .news-card-body { padding: 22px 24px 26px; }
+  .news-tag { display: inline-block; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; color: var(--white); background: var(--gold); padding: 3px 8px; border-radius: 2px; margin-bottom: 10px; font-family: var(--sans); }
+  .news-tag.award { background: var(--navy); }
+  .news-tag.life  { background: var(--navy-lt); }
+  .news-date { font-size: 0.72rem; color: var(--gray); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; font-family: var(--sans); }
+  .news-headline { font-family: var(--serif); font-size: 1.05rem; color: var(--navy); line-height: 1.4; margin-bottom: 8px; font-weight: 400; transition: color 0.2s; }
+  .news-excerpt { font-size: 0.87rem; color: var(--gray); line-height: 1.7; font-weight: 300; }
+
+  /* PEOPLE */
+  #people { background: var(--cream); }
+  .pi-card { display: grid; grid-template-columns: 260px 1fr; gap: 56px; align-items: start; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--gray-lt); }
+  .pi-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 2px; border: 1px solid var(--gray-lt); background: var(--gray-lt); }
+  .pi-name { font-family: var(--serif); font-size: 2rem; font-weight: 400; color: var(--navy); margin-bottom: 2px; }
+  .pi-title { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 12px; font-family: var(--sans); }
+  .pi-bio { font-size: 0.95rem; color: var(--gray); line-height: 1.55; font-weight: 300; margin-bottom: 20px; }
+  .pi-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .pi-link { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--navy); border: 1px solid var(--navy); padding: 7px 16px; border-radius: 2px; font-weight: 400; transition: all 0.2s; }
+  .pi-link:hover { background: var(--navy); color: var(--white); }
+  .team-section { margin-bottom: 52px; }
+  .team-section-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); font-weight: 500; font-family: var(--sans); padding-bottom: 12px; border-bottom: 2px solid var(--navy); display: block; }
+  .member-row { display: grid; grid-template-columns: 60px 1fr auto; align-items: center; gap: 0 24px; padding: 18px 0; border-bottom: 1px solid var(--gray-lt); }
+  .member-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; background: var(--gray-lt); border: 1px solid var(--gray-lt); display: block; flex-shrink: 0; }
+  .member-name { font-family: var(--serif); font-size: 1.05rem; color: var(--navy); font-weight: 400; line-height: 1.3; }
+  .member-role { font-size: 0.8rem; color: var(--gray); font-weight: 300; margin-top: 1px; }
+  .member-focus { font-size: 0.8rem; color: var(--gray); font-weight: 300; font-style: italic; margin-top: 2px; }
+  .member-badge { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; color: var(--gold); border: 1px solid var(--gold); padding: 3px 9px; border-radius: 2px; white-space: nowrap; font-family: var(--sans); }
+  .alumni-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0 40px; padding: 15px 0; border-bottom: 1px solid var(--gray-lt); }
+  .alumni-name { font-family: var(--serif); font-size: 1rem; color: var(--navy); font-weight: 400; }
+  .alumni-role-years { font-size: 0.8rem; color: var(--gray); font-weight: 300; margin-top: 2px; }
+  .alumni-now { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--gray); font-weight: 300; white-space: nowrap; }
+  .alumni-now::before { content: '→'; color: var(--gold); font-size: 1rem; }
+
+  /* CONTACT */
+  #contact { background: var(--navy); }
+  #contact .section-title { color: var(--white); }
+  #contact .section-label { color: var(--gold-lt); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contact-block { margin-bottom: 40px; }
+  .contact-block-label { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-lt); font-weight: 500; margin-bottom: 10px; font-family: var(--sans); }
+  .contact-block-text { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.8; font-weight: 300; }
+  .contact-block-text a { color: rgba(255,255,255,0.75); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); transition: border-color 0.2s, color 0.2s; }
+  .contact-block-text a:hover { color: var(--white); border-color: var(--gold-lt); }
+  .contact-join-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(184,149,85,0.3); padding: 40px; border-radius: 2px; }
+  .contact-join-box h3 { font-family: var(--serif); font-size: 1.5rem; color: var(--white); margin-bottom: 16px; font-weight: 400; }
+  .contact-join-box p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.8; margin-bottom: 16px; font-weight: 300; }
+
+  /* FOOTER */
+  footer { background: var(--navy-md); padding: 24px 36px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.07); gap: 24px; }
+  .footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.3); font-weight: 300; }
+  .footer-logos { display: flex; align-items: center; gap: 32px; }
+  .footer-logo-img { height: 48px; width: auto; opacity: 0.38; filter: brightness(0) invert(1); transition: opacity 0.2s; }
+  .footer-logo-img:hover { opacity: 0.65; }
+  .footer-logo-placeholder { height: 26px; display: flex; align-items: center; padding: 0 14px; border: 1px solid rgba(255,255,255,0.12); border-radius: 2px; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.2); font-family: var(--sans); font-weight: 300; white-space: nowrap; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    section { padding: 72px 24px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 0 24px; }
+    .hero-visual { display: none; }
+    .hero-pub-card { max-width: 100%; }
+    .research-card { grid-template-columns: 1fr; }
+    .research-card-left { flex-direction: row; border-right: none; border-bottom: 1px solid var(--gray-lt); min-height: auto; }
+    .techniques-grid { grid-template-columns: repeat(2, 1fr); }
+    .news-grid { grid-template-columns: 1fr; }
+    .pi-card { grid-template-columns: 1fr; }
+    .pi-photo { max-width: 220px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .footer-logos { justify-content: center; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .techniques-grid { grid-template-columns: 1fr; }
+    .alumni-now { display: none; }
+    .member-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="178 231 240 310" xmlns="http://www.w3.org/2000/svg">
+      <path style="fill:#ffffff" d="M283.39,394.85v-29.61h-26.3v59.22c0,30.14,24.52,54.65,54.65,54.65s54.64-24.52,54.64-54.65v-59.22c0-30.14-24.5-54.65-54.64-54.65v26.29c15.64,0,28.35,12.73,28.35,28.37v59.22c0,15.64-12.72,28.37-28.35,28.37s-28.35-12.73-28.35-28.37v-29.6Z"/>
+      <rect style="fill:#ffffff" x="204.51" y="338.93" width="26.3" height="29.61"/>
+      <path style="fill:#45beab" d="M285.46,257.99v-26.3c-59.13,0-107.24,48.12-107.24,107.25h26.29c0-44.63,36.32-80.95,80.95-80.95"/>
+      <path style="fill:#45beab" d="M311.75,257.99v26.3c44.63,0,80.95,36.32,80.95,80.94v59.23c0,44.63-36.32,80.94-80.95,80.94s-80.94-36.3-80.94-80.94v-29.6h-26.3v29.6c0,59.12,48.1,107.24,107.24,107.24s107.24-48.12,107.24-107.24v-59.23c0-59.12-48.1-107.24-107.24-107.24"/>
+      <path style="fill:#45beab" d="M285.46,310.58v-26.3c-30.14,0-54.65,24.53-54.65,54.65h26.3c0-15.64,12.72-28.35,28.35-28.35"/>
+    </svg>
+    <div class="nav-logo-text">
+      Vardhana Lab
+      <span>Memorial Sloan Kettering Cancer Center</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#people">People</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-bg-image"></div>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Vardhana Laboratory · MSKCC</p>
+      <h1 class="hero-title">Metabolic Regulation<br>of <em>Immune Cell Identity</em></h1>
+      <p class="hero-subtitle">We study how the metabolic state of the immune system regulates its homeostasis, function, and fate — with the goal of understanding and overcoming immune dysfunction in cancer.</p>
+      <div class="hero-cta">
+        <a href="#research" class="btn btn-gold">Our Research</a>
+        <a href="#contact" class="btn btn-outline">Contact the Lab</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <!--
+        FEATURED PUBLICATION CARD — HOW TO UPDATE:
+        1. Journal logo: replace the <span> inside .hero-pub-journal-logo with:
+               <img src="journal-logo.png" alt="Nature Immunology" />
+           Use a white/light version of the journal logo for best appearance.
+        2. Update the eyebrow text (journal name + year)
+        3. Update .hero-pub-title with the real paper title
+        4. Update .hero-pub-authors with real authors
+        5. Replace href="#" with the PubMed or journal DOI link
+      -->
+      <div class="hero-pub-card">
+
+        <div class="hero-pub-header">
+          <div class="hero-pub-journal-logo">
+            <span class="hero-pub-journal-name-fallback"><img src="biorxiv_logo.png"/></span>
+          </div>
+          <div>
+            <p class="hero-pub-label">Featured Publication</p>
+            <p class="hero-pub-eyebrow">bioRxiv · 2026</p>
+          </div>
+        </div>
+
+        <p class="hero-pub-title">
+          A post-translational regulatory map of chronic antigen-driven human T cell dysfunction
+        </p>
+
+        <p class="hero-pub-authors">
+          Kojima H*, Wayne CR*, <span style="color: white; font-weight: 500;">Somarribas Patterson LF*</span>, Sanford H*, …, <span style="color: white; font-weight: 500;">Vardhana SA*</span>, Vinogradova EV*
+        </p>
+
+        <a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709614v1" target="_blank" class="hero-pub-link">
+          Read the paper ↗
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="section-inner">
+    <p class="section-label">Research Focus</p>
+    <h2 class="section-title">Investigating how metabolism shapes immune fate and function</h2>
+    <p class="section-intro">Our laboratory integrates cell biology, biochemistry, and computational approaches to understand how intracellular metabolic programs and the tumor microenvironment cooperate to drive T cell dysfunction — and how these insights can be harnessed therapeutically.</p>
+
+    <div class="research-list">
+
+      <!-- AREA 1
+           TO ADD IMAGE: replace <div class="research-img-placeholder">...</div>
+           with: <img src="your-image.jpg" alt="description" class="research-card-img" />
+           Recommended: square illustration, min 240x240px -->
+      <div class="research-card">
+        <div class="research-card-left">
+          <div class="research-img-placeholder">
+            <img src="project1.jpg" class="research-card-img" /></div>
+        </div>
+        <div class="research-card-right">
+          <h3 class="research-card-title">Molecular Regulation of Immune Metabolism</h3>
+          <p class="research-card-text">We investigate the molecular checkpoints governing T cell metabolic programs — including TCR and co-receptor driven signal transduction, as well as how the resultant metabolic alterations in immune cells influence epigenetic, transcriptional, and post-transcriptional programs that drive cell fate decisions in health and disease.</p>
+          <div class="research-card-paper">
+            <svg class="paper-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="13" height="18" rx="1" stroke="#b89555" stroke-width="1.4"/><line x1="8" y1="7" x2="13" y2="7" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="10" x2="15" y2="10" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="13" x2="15" y2="13" stroke="#b89555" stroke-width="1.2"/><path d="M15 2v5h5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/><path d="M15 2l5 5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <a href="https://www.biorxiv.org/content/10.1101/2025.04.30.651453v1" target="_blank">Key paper: Mitra et al., bioRxiv 2025 ↗</a>
+          </div>
+          <div class="research-card-paper">
+            <svg class="paper-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="13" height="18" rx="1" stroke="#b89555" stroke-width="1.4"/><line x1="8" y1="7" x2="13" y2="7" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="10" x2="15" y2="10" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="13" x2="15" y2="13" stroke="#b89555" stroke-width="1.2"/><path d="M15 2v5h5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/><path d="M15 2l5 5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709614v1" target="_blank">Key paper: Kojima*, Wayne*, Somarribas Patterson*, Sanford* et al., bioRxiv 2026 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AREA 2 -->
+      <div class="research-card">
+        <div class="research-card-left">
+          <div class="research-img-placeholder">
+            <img src="project2.jpg" class="research-card-img" /></div>
+        </div>
+        <div class="research-card-right">
+          <h3 class="research-card-title">Environmental Control of Immune Function</h3>
+          <p class="research-card-text">The tumor microenvironment imposes profound metabolic constraints on T cells. We study how the balance between nutrient demand and availability limit functional immune programs within tumors.</p>
+          <div class="research-card-paper">
+            <svg class="paper-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="13" height="18" rx="1" stroke="#b89555" stroke-width="1.4"/><line x1="8" y1="7" x2="13" y2="7" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="10" x2="15" y2="10" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="13" x2="15" y2="13" stroke="#b89555" stroke-width="1.2"/><path d="M15 2v5h5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/><path d="M15 2l5 5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <a href="https://www.biorxiv.org/content/10.1101/2025.04.28.651077v1" target="_blank">Key paper: Chen et al, bioRxiv 2025 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AREA 3 -->
+      <div class="research-card">
+        <div class="research-card-left">
+          <div class="research-img-placeholder">
+            <img src="project3.jpg" class="research-card-img" /></div>
+        </div>
+        <div class="research-card-right">
+          <h3 class="research-card-title">Metabolic Drivers of Immune Heterogeneity</h3>
+          <p class="research-card-text">Using single-cell approaches, we map the metabolic diversity within T cell populations to identify how distinct metabolic states give rise to functionally heterogeneous immune cell subsets in tumors, particularly subtypes that do not respond to conventional immunotherapies.</p>
+          <div class="research-card-paper">
+            <svg class="paper-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="13" height="18" rx="1" stroke="#b89555" stroke-width="1.4"/><line x1="8" y1="7" x2="13" y2="7" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="10" x2="15" y2="10" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="13" x2="15" y2="13" stroke="#b89555" stroke-width="1.2"/><path d="M15 2v5h5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/><path d="M15 2l5 5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <a href="https://www.biorxiv.org/content/10.1101/2025.05.05.651897v2" target="_blank">Key paper: Salehi*, Stroobant* et al, bioRxiv 2025 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AREA 4 -->
+      <div class="research-card">
+        <div class="research-card-left">
+         <div class="research-img-placeholder">
+            <img src="project4.jpg" class="research-card-img" /></div>
+        </div>
+        <div class="research-card-right">
+          <h3 class="research-card-title">Immune Dysregulation in Hematologic Malignancies</h3>
+          <p class="research-card-text">We apply mechanistic insights to lymphoid malignancies, studying how the unique cellular landscape of hematologic cancers and anti-cancer therapeutics shapes immune responses to both cancer and viral infections.</p>
+          <div class="research-card-paper">
+            <svg class="paper-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="13" height="18" rx="1" stroke="#b89555" stroke-width="1.4"/><line x1="8" y1="7" x2="13" y2="7" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="10" x2="15" y2="10" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="13" x2="15" y2="13" stroke="#b89555" stroke-width="1.2"/><path d="M15 2v5h5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/><path d="M15 2l5 5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <a href="https://www.nature.com/articles/s41591-024-03076-6" target="_blank">Key paper: Horwitz et al., Nat Med 2024 ↗</a>
+             <svg class="paper-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="13" height="18" rx="1" stroke="#b89555" stroke-width="1.4"/><line x1="8" y1="7" x2="13" y2="7" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="10" x2="15" y2="10" stroke="#b89555" stroke-width="1.2"/><line x1="8" y1="13" x2="15" y2="13" stroke="#b89555" stroke-width="1.2"/><path d="M15 2v5h5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/><path d="M15 2l5 5" stroke="#b89555" stroke-width="1.4" stroke-linecap="round"/></svg>
+       <a href="https://www.cell.com/cancer-cell/fulltext/S1535-6108(22)00226-4" target="_blank">Key paper: Lyudovyk*, Kim*, Qualls* et al., Cancer Cell 2022 ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPROACHES (embedded at bottom of Research section) -->
+    <div style="margin-top:96px;">
+      <p class="section-label">Experimental Approaches</p>
+      <h2 class="section-title">An integrated toolkit for studying immune metabolism</h2>
+      <div class="gold-divider"></div>
+      <!-- TO REPLACE TECHNIQUE ICONS: remove the <svg> and add
+           <img src="your-icon.png" alt="" class="technique-icon-img" />
+           Recommended: 40x40px PNG with transparent background -->
+      <div class="techniques-grid">
+        <div class="technique-item">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+    <img src="lab icons_1.png" alt="" class="technique-icon-img" />
+    <p class="technique-name">Metabolic Profiling</p>
+  </div>
+          <p class="technique-desc">Seahorse XF analysis, stable isotope tracing, and mass spectrometry-based metabolomics to quantify cellular metabolic flux.</p>
+        </div>
+        <div class="technique-item">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+    <img src="lab icons_2.png" alt="" class="technique-icon-img" />
+          <p class="technique-name">Immunologic Assays</p>
+  </div>
+          <p class="technique-desc">High-parameter flow cytometry, functional killing assays, cytokine profiling, and ex vivo co-culture systems.</p>
+        </div>
+        <div class="technique-item">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+    <img src="lab icons_3.png" alt="" class="technique-icon-img" />
+          <p class="technique-name">Molecular Genetics</p>
+  </div>
+          <p class="technique-desc">CRISPR-Cas9 screens, retroviral/lentiviral overexpression, and conditional knockout mouse models to dissect gene function.</p>
+        </div>
+        <div class="technique-item">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+    <img src="lab icons_4.png" alt="" class="technique-icon-img" />
+          <p class="technique-name">Mouse Models</p>
+  </div>
+          <p class="technique-desc">Genetically engineered mouse models of lymphoma, syngeneic tumor challenges, and adoptive T cell transfer systems.</p>
+        </div>
+        <div class="technique-item">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+    <img src="lab icons_5.png" alt="" class="technique-icon-img" />
+          <p class="technique-name">Single-Cell Genomics</p>
+  </div>
+          <p class="technique-desc">scRNA-seq, ATAC-seq, CITE-seq, and spatial transcriptomics to resolve intra-tumoral T cell heterogeneity at single-cell resolution.</p>
+        </div>
+        <div class="technique-item">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+    <img src="lab icons_6.png" alt="" class="technique-icon-img" />
+          <p class="technique-name">Synthetic Biology</p>
+  </div>
+          <p class="technique-desc">Engineered T cell receptors, CAR-T platforms, and synthetic metabolic circuits to rewire immune cell function and validate therapeutic targets.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-inner">
+    <p class="section-label">Selected Publications</p>
+    <h2 class="section-title">Recent work from the laboratory</h2>
+    <div class="pub-list">
+      <a href="https://www.biorxiv.org/content/10.64898/2026.03.27.714789v1" class="pub-item" target="_blank>
+        <span class="pub-year">2026</span>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Mitochondrial ATP production promotes T cell differentiation and function by regulating chromatin accessibility</p><p class="pub-authors">Ng C, Fung TS, Li D, Kropp KN, <span style="font-weight: 500;">Somarribas Patterson LF</span>..., <span style="font-weight: 500;">Vardhana SA</span>, Chandel NS, Wu L, Thompson CB</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709614v1" class="pub-item" target="_blank>
+        <span class="pub-year">2026</span>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">A post-translational regulatory map of chronic antigen-driven human T cell dysfunction</p><p class="pub-authors">Kojima H*, Wayne CR*, <span style="font-weight: 500;">Somarribas Patterson LF*</span>, Sanford H*, …, <span style="font-weight: 500;">Vardhana SA*</span>, Vinogradova EV*</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.biorxiv.org/content/10.1101/2025.04.28.651077v1" class="pub-item" target="_blank>
+        <span class="pub-year">2025</span>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Intratumoral amino acid insufficiency limits CD8+ T-cell effector function</p><p class="pub-authors"><span style="font-weight: 500;">Chen YT, Lin YH, Rahman J</span>, Cross J, Pavlova NN, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.biorxiv.org/content/10.1101/2025.04.30.651453v1" class="pub-item" target="_blank>
+        <span class="pub-year">2025</span>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">MEK-dependent bioenergetic demand drives terminal CD8+ T cell exhaustion</p><p class="pub-authors"><span style="font-weight: 500;">Mitra T, Rahman J, Hwee M</span>, Ramos R, Liu H, Hartman T, Cross J, de Jesus M, Huse M, Longo V, Zanzonico P, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.biorxiv.org/content/10.1101/2025.05.05.651897v2" class="pub-item" target="_blank>
+        <span class="pub-year">2025</span>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Disrupted priming within draining lymph nodes drives immune quiescence in gastric cancer</p><p class="pub-authors">Salehi S*, <span style="font-weight: 500;">Stroobant EE*</span>, ..., Shah SP*, Strong VE*, <span style="font-weight: 500;">Vardhana SA*</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.nature.com/articles/s41591-024-03076-6" class="pub-item" target="_blank>
+        <span class="pub-year">2024</span>
+        <div class="pub-content"><p class="pub-journal">Nature Medicine</p><p class="pub-title">Duvelisib plus romidepsin in relapsed/refractory T cell lymphomas: a phase 1b/2a trial</p><p class="pub-authors">Horwitz S*, ..., <span style="font-weight: 500;">Vardhana SA*</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.cell.com/immunity/fulltext/S1074-7613(22)00500-3" class="pub-item" target="_blank>
+        <span class="pub-year">2022</span>
+        <div class="pub-content"><p class="pub-journal">Immunity</p><p class="pub-title">SARS-CoV-2 in immunocompromised individuals</p><p class="pub-authors">Dewolf S*, Laracy JC*, Perales MA, Kamboj M, van den Brink MRM, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.cell.com/cancer-cell/fulltext/S1535-6108(22)00231-8" class="pub-item" target="_blank>
+        <span class="pub-year">2022</span>
+        <div class="pub-content"><p class="pub-journal">Cancer Cell</p><p class="pub-title">Genome-wide CRISPR screens of T cell exhaustion identify chromatin remodeling factors that limit T cell persistence</p><p class="pub-authors">Belk JA, Yao W, ..., <span style="font-weight: 500;">Vardhana SA</span>, Satpathy AT</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.cell.com/cancer-cell/fulltext/S1535-6108(22)00226-4" class="pub-item" target="_blank>
+        <span class="pub-year">2022</span>
+        <div class="pub-content"><p class="pub-journal">Cancer Cell</p><p class="pub-title">Impaired humoral immunity is associated with prolonged COVID-19 despite robust CD8 T cell responses</p><p class="pub-authors">Lyudovyk O*, Kim JY*, <span style="font-weight: 500;">Qualls D*</span>, ..., Greenbaum B*, Huang AC*, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://aacrjournals.org/cancerdiscovery/article/12/1/62/675624/Prolonged-SARS-CoV-2-Infection-in-Patients-with?guestAccessKey=" class="pub-item" target="_blank>
+        <span class="pub-year">2022</span>
+        <div class="pub-content"><p class="pub-journal">Cancer Discovery</p><p class="pub-title">Prolonged SARS-CoV-2 Infection in Patients with Lymphoid Malignancies</p><p class="pub-authors"><span style="font-weight: 500;">Lee CY</span>, Shah MK, Hoyos D, ..., <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.nature.com/articles/s41591-021-01386-7" class="pub-item" target="_blank>
+        <span class="pub-year">2021</span>
+        <div class="pub-content"><p class="pub-journal">Nature Medicine</p><p class="pub-title">CD8+ T cells contribute to survival in patients with COVID-19 and hematologic cancer</p><p class="pub-authors">Bange EM, Han NA, Wileyto P, ..., <span style="font-weight: 500;">Vardhana SA*</span>, Mamtani R*, Huang AC*</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.nature.com/articles/s41590-020-0725-2" class="pub-item" target="_blank>
+        <span class="pub-year">2020</span>
+        <div class="pub-content"><p class="pub-journal">Nature Immunology</p><p class="pub-title">Impaired mitochondrial oxidative phosphorylation limits the self-renewal of T cells exposed to persistent antigen</p><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA, Hwee MA,</span> Berisa M, ..., Thompson CB</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.nature.com/articles/s42255-019-0082-3" class="pub-item" target="_blank>
+        <span class="pub-year">2019</span>
+        <div class="pub-content"><p class="pub-journal">Nature Metabolism</p><p class="pub-title">Glutamine independence is a selectable feature of pluripotent stem cells</p><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA</span>, Arnold PK, Rosen BP, ..., Finley LWS</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.cell.com/immunity/fulltext/S1074-7613(10)00130-5" class="pub-item" target="_blank>
+        <span class="pub-year">2010</span>
+        <div class="pub-content"><p class="pub-journal">Immunity</p><p class="pub-title">Essential Role of Ubiquitin and TSG101 Protein in Formation and Function of the Central Supramolecular Activation Cluster</p><p class="pub-authors"><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA</span>, Choudhuri K, Varma R, Dustin ML</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-immunol-030409-101308" class="pub-item" target="_blank>
+        <span class="pub-year">2010</span>
+        <div class="pub-content"><p class="pub-journal">Annual Review of Immunology</p><p class="pub-title">Functional Anatomy of T Cell Activation and Synapse Formation</p><p class="pub-authors">Fooksman DR, <span style="font-weight: 500;">Vardhana S*</span>, Vasiliver-Shamis G*, ..., Dustin ML</p></div>
+        <span class="pub-arrow">↗</span>
+      </a>
+    </div>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/?term=%22vardhana+s%22" class="pub-more" target="_blank" rel="noopener">All publications on PubMed ↗</a>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="section-inner">
+    <p class="section-label">Lab News</p>
+    <h2 class="section-title">Latest from the laboratory</h2>
+    <div class="news-grid">
+      <a href="#" class="news-card">
+        <img src="nci.svg" alt="" class="news-image" onerror="this.style.background='#e8e4dd'" />
+        <div class="news-card-body">
+          <span class="news-tag award">Award</span>
+          <p class="news-date">March 2026</p>
+          <h3 class="news-headline">Lab receives new funding from the NCI and DOD</h3>
+          <p class="news-excerpt">The lab received a DOD award to study RNA splicing in T cell exhaustion and a new R01 grant to understand and overcome immune dysfunction in gastric adenocarcinoma.  Thanks to all for a great team effort!</p>
+        </div>
+      </a>
+      <a href="#" class="news-card">
+        <img src="damonrunyon.svg" alt="" class="news-image" onerror="this.style.background='#e8e4dd'" />
+        <div class="news-card-body">
+          <span class="news-tag life">Lab Life</span>
+          <p class="news-date">March 2026</p>
+          <h3 class="news-headline">Welcome to our newest lab members</h3>
+          <p class="news-excerpt">The Vardhana Lab will be welcoming several new lab members, including Qinyan Feng, a new graduate student in the IMP program and Deahzana Randall, a new Damon Runyon SPARK Scholar!</p>
+        </div>
+      </a>
+      <a href="#" class="news-card">
+        <img src="tiffany_grad.png" alt="" class="news-image" onerror="this.style.background='#e8e4dd'" />
+        <div class="news-card-body">
+          <span class="news-tag life">Lab Life</span>
+          <p class="news-date">November 2025</p>
+          <h3 class="news-headline">Congratulations Dr. Merlinsky!</h3>
+          <p class="news-excerpt">Tiffany Merlinsky became the first Vardhana lab member to successfully defend her thesis, "Cysteine Availability Limits CD8+ T Cell Priming in Severe COVID-19".  Congratulations Tiffany!</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PEOPLE -->
+<section id="people">
+  <div class="section-inner">
+    <p class="section-label">The Team</p>
+    <h2 class="section-title">People</h2>
+    <div class="pi-card">
+      <img src="vardhana_s.jpg" alt="Santosha Vardhana" class="pi-photo" onerror="this.style.background='#e8e4dd'" />
+      <div>
+        <h2 class="pi-name">Santosha Vardhana, MD, PhD</h2>
+        <p class="pi-title">Principal Investigator · Assistant Member, Immuno-Oncology Program, MSK</p>
+        <p class="pi-bio">Santosha Vardhana is an Assistant Professor in the Immuno-Oncology Program at Memorial Sloan Kettering Cancer Center and an Attending Physician on the Lymphoma Service within the Department of Medicine.</p>
+        <p class="pi-bio">He completed his graduate training in Michael Dustin’s laboratory at New York University in immunology, clinical residency in internal medicine at New York Presbyterian Hospital/Weill Cornell Medical College, medical oncology training at Memorial Sloan Kettering Cancer Center, and post-doctoral training in the laboratory of Craig Thompson. He has received several awards including a Pershing Square Sohn Cancer Research Prize, a Burroughs Wellcome Fund Career Award for Medical Scientists, a Damon Runyon Clinical Investigator Award, and was named one of Cell's 50 Scientists that Inspire.</p>
+        <div class="pi-links">
+          <a href="mailto:vardhans@mskcc.org" class="pi-link">Email</a>
+          <a href="https://x.com/SantoshVardhana" class="pi-link" target="_blank">Twitter / X</a>
+          <a href="https://bsky.app/profile/santoshvardhana.bsky.social" class="pi-link" target="_blank">Bluesky</a>
+          <a href="https://scholar.google.com/citations?user=8B12CikAAAAJ&hl=en" class="pi-link" target="_blank">Google Scholar</a>
+          <a href="https://www.mskcc.org/cancer-care/doctors/santosha-vardhana" class="pi-link" target="_blank">MSK Profile</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-section">
+      <p class="team-section-label">Postdoctoral Fellows</p>
+      <div class="member-row"><img src="schoenfeld_j.jpg" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Joshua Schoenfeld, MD, PhD</p><p class="member-role">Postdoctoral Fellow · Instructor, Gastrointestinal Medical Oncology</p><p class="member-focus">Iron Metabolism · Pancreas Cancer Immunotherapy</p></div><span class="member-badge">Postdoc</span></div>
+      <div class="member-row"><img src="somarribas_patterson_lf.jpg" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Luis Felipe Somarribas Patterson, PhD</p><p class="member-role">Postdoctoral Fellow</p><p class="member-focus">Amino acid catabolism · Nuclear Orphan Receptors</p></div><span class="member-badge">Postdoc</span></div>
+      <div class="member-row"><img src="berning_p.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Philipp Berning, MD</p><p class="member-role">Postdoctoral Fellow, Lymphoma</p><p class="member-focus">Research focus — replace with area of investigation</p></div><span class="member-badge">Postdoc</span></div>
+      <div class="member-row"><img src="marouf_a.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Amira Marouf, MD, PhD</p><p class="member-role">Postdoctoral Fellow, Lymphoma</p><p class="member-focus">Research focus — replace with area of investigation</p></div><span class="member-badge">Postdoc</span></div>
+      <div class="member-row"><img src="coffey_m.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Max Coffey, MD</p><p class="member-role">Postdoctoral Fellow, Gastric Cancer</p><p class="member-focus">Research focus — replace with area of investigation</p></div><span class="member-badge">Postdoc</span></div>
+    </div>
+
+    <div class="team-section">
+      <p class="team-section-label">Graduate Students</p>
+      <div class="member-row"><img src="mcgary_l.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Lisa McGary</p><p class="member-role">MD/PhD Candidate</p><p class="member-focus">Glucose metabolism · Epigenetics</p></div><span class="member-badge">Graduate</span></div>
+      <div class="member-row"><img src="chen_yt.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Yan-Ting Chen</p><p class="member-role">PhD Candidate</p><p class="member-focus">Amino acid metabolism · Tumor microenvironment</p></div><span class="member-badge">Graduate</span></div>
+      <div class="member-row"><img src="mitra_t.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Tanmana Mitra</p><p class="member-role">PhD Candidate</p><p class="member-focus">TCR avidity · Signal transduction</p></div><span class="member-badge">Graduate</span></div>
+      <div class="member-row"><img src="liberatore_k.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Katarina Liberatore</p><p class="member-role">PhD Candidate</p><p class="member-focus">Lipid metabolism · Lymph node biology</p></div><span class="member-badge">Graduate</span></div>
+      <div class="member-row"><img src="feng_q.jpg" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Qinyan Feng</p><p class="member-role">PhD Candidate</p><p class="member-focus">RNA homeostasis · Amino acid metabolism</p></div><span class="member-badge">Graduate</span></div>
+    </div>
+
+    <div class="team-section">
+      <p class="team-section-label">Research Staff</p>
+      <div class="member-row"><img src="lin_yh.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Ya-Hui Lin, MS</p><p class="member-role">Senior Research Technician</p></div><span class="member-badge">Staff</span></div>
+      <div class="member-row"><img src="noel_j.png" alt="" class="member-photo" onerror="this.style.background='#d3d1c7'" /><div class="member-info"><p class="member-name">Jahi Noel</p><p class="member-role">Research Technician</p></div><span class="member-badge">Staff</span></div>
+    </div>
+
+    <div class="team-section">
+      <p class="team-section-label">Alumni</p>
+      <div class="alumni-row"><div><p class="alumni-name">Madeline Hwee</p><p class="alumni-role-years">Research Technician · 2017–2021</p></div><span class="alumni-now">Speech Language Pathologist</span></div>
+      <div class="alumni-row"><div><p class="alumni-name">Tiffany Merlinsky</p><p class="alumni-role-years">Graduate Student · 2021–2025</p></div><span class="alumni-now">Medical Student, Weill Cornell Medical College</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title">Contact the Vardhana Lab</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-block"><p class="contact-block-label">Location</p><p class="contact-block-text">Memorial Sloan Kettering Cancer Center<br>Zuckerman Research Building, 8th floor<br>417 East 68th Street<br>New York, NY 10065</p></div>
+        <div class="contact-block"><p class="contact-block-label">Principal Investigator</p><p class="contact-block-text"><a href="mailto:vardhans@mskcc.org">vardhans@mskcc.org</a></p></div>
+        <div class="contact-block"><p class="contact-block-label">Follow</p><p class="contact-block-text"><a href="#" target="_blank">Twitter / X @VardhanaLab</a><br><p class="contact-block-text"><a href="#" target="_blank">Bluesky @santoshvardhana.bsky.social</a><br><a href="#" target="_blank">MSK Lab Page</a></p></div>
+      </div>
+      <div>
+        <div class="contact-join-box">
+          <h3>Join Our Team</h3>
+          <p>We are actively recruiting motivated postdoctoral fellows, graduate students, and research technicians who are passionate about immunology, cancer biology, and metabolism. We welcome scientists from diverse backgrounds and are committed to fostering an inclusive, collaborative environment.</p>
+          <p>Prospective members should send a CV, brief statement of research interests, and contact information for three references.</p>
+          <a href="mailto:vardhans@mskcc.org?subject=Prospective Lab Member Inquiry" class="btn btn-gold" style="margin-top:8px;">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-text">© 2026 Vardhana Laboratory · Memorial Sloan Kettering Cancer Center · All rights reserved</p>
+  <div class="footer-logos">
+         <img src="msk.png" alt="Memorial Sloan Kettering" class="footer-logo-img" />
+         <img src="wcm.png" alt="Weill Cornell Medicine" class="footer-logo-img" />
+  </div>
+</footer>
+
+</body>
+</html>
