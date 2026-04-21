@@ -284,6 +284,97 @@
   .footer-logo-img:hover { opacity: 0.65; }
   .footer-logo-placeholder { height: 26px; display: flex; align-items: center; padding: 0 14px; border: 1px solid rgba(255,255,255,0.12); border-radius: 2px; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.2); font-family: var(--sans); font-weight: 300; white-space: nowrap; }
 
+  /* TOPIC TAGS on publications */
+  .pub-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pub-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-family: var(--sans);
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .pub-tag.immunology  { color: #2e6b8a; border-color: #2e6b8a; background: rgba(46,107,138,0.08); }
+  .pub-tag.metabolism  { color: #5c7a2e; border-color: #5c7a2e; background: rgba(92,122,46,0.08); }
+  .pub-tag.lymphoma    { color: #7a2e6b; border-color: #7a2e6b; background: rgba(122,46,107,0.08); }
+  .pub-tag.gastric     { color: #8a5a2e; border-color: #8a5a2e; background: rgba(138,90,46,0.08); }
+  .pub-tag.melanoma    { color: #2e4a8a; border-color: #2e4a8a; background: rgba(46,74,138,0.08); }
+  .pub-tag.covid       { color: #6b2e2e; border-color: #6b2e2e; background: rgba(107,46,46,0.08); }
+  .pub-tag.review      { color: var(--gray); border-color: var(--gray-lt); background: rgba(107,114,128,0.08); }
+
+  /* LAB PHOTO BANNER */
+  .lab-photo-banner {
+    width: 100%;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .lab-photo-banner img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    opacity: 0.88;
+  }
+  .lab-photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px 48px;
+    background: linear-gradient(to top, rgba(26,42,58,0.85) 0%, transparent 100%);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    font-family: var(--sans);
+    letter-spacing: 0.04em;
+  }
+  /* Placeholder when no photo yet */
+  .lab-photo-placeholder {
+    width: 100%;
+    height: 320px;
+    background: var(--navy-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .lab-photo-placeholder p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--sans);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* COLLABORATORS */
+  .collab-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 0 40px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--gray-lt);
+  }
+  .collab-name { font-family: var(--serif); font-size: 1rem; color: var(--navy); font-weight: 400; }
+  .collab-affil { font-size: 0.8rem; color: var(--gray); font-weight: 300; margin-top: 2px; }
+  .collab-desc { font-size: 0.8rem; color: var(--gray); font-weight: 300; font-style: italic; margin-top: 3px; }
+  .collab-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(184,149,85,0.3);
+    padding-bottom: 1px;
+    white-space: nowrap;
+    align-self: center;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .collab-link:hover { color: var(--navy); border-color: var(--navy); }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 0 24px; }
@@ -332,6 +423,7 @@
     <li><a href="#news">News</a></li>
     <li><a href="#people">People</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="fun.html">Lab Life</a></li>
   </ul>
 </nav>
 
@@ -536,83 +628,100 @@
     <div class="pub-list">
       <a href="https://www.biorxiv.org/content/10.64898/2026.03.27.714789v1" class="pub-item" target="_blank>
         <span class="pub-year">2026</span>
-        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Mitochondrial ATP production promotes T cell differentiation and function by regulating chromatin accessibility</p><p class="pub-authors">Ng C, Fung TS, Li D, Kropp KN, <span style="font-weight: 500;">Somarribas Patterson LF</span>..., <span style="font-weight: 500;">Vardhana SA</span>, Chandel NS, Wu L, Thompson CB</p></div>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Mitochondrial ATP production promotes T cell differentiation and function by regulating chromatin accessibility</p><p class="pub-authors">Ng C, Fung TS, Li D, Kropp KN, <span style="font-weight: 500;">Somarribas Patterson LF</span>..., <span style="font-weight: 500;">Vardhana SA</span>, Chandel NS, Wu L, Thompson CB</p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag metabolism">Metabolism</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.biorxiv.org/content/10.64898/2026.03.04.709614v1" class="pub-item" target="_blank>
         <span class="pub-year">2026</span>
-        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">A post-translational regulatory map of chronic antigen-driven human T cell dysfunction</p><p class="pub-authors">Kojima H*, Wayne CR*, <span style="font-weight: 500;">Somarribas Patterson LF*</span>, Sanford H*, …, <span style="font-weight: 500;">Vardhana SA*</span>, Vinogradova EV*</p></div>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">A post-translational regulatory map of chronic antigen-driven human T cell dysfunction</p><p class="pub-authors">Kojima H*, Wayne CR*, <span style="font-weight: 500;">Somarribas Patterson LF*</span>, Sanford H*, …, <span style="font-weight: 500;">Vardhana SA*</span>, Vinogradova EV*</p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag metabolism">Metabolism</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.biorxiv.org/content/10.1101/2025.04.28.651077v1" class="pub-item" target="_blank>
         <span class="pub-year">2025</span>
-        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Intratumoral amino acid insufficiency limits CD8+ T-cell effector function</p><p class="pub-authors"><span style="font-weight: 500;">Chen YT, Lin YH, Rahman J</span>, Cross J, Pavlova NN, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Intratumoral amino acid insufficiency limits CD8+ T-cell effector function</p><p class="pub-authors"><span style="font-weight: 500;">Chen YT, Lin YH, Rahman J</span>, Cross J, Pavlova NN, <span style="font-weight: 500;">Vardhana SA</span></p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag metabolism">Metabolism</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.biorxiv.org/content/10.1101/2025.04.30.651453v1" class="pub-item" target="_blank>
         <span class="pub-year">2025</span>
-        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">MEK-dependent bioenergetic demand drives terminal CD8+ T cell exhaustion</p><p class="pub-authors"><span style="font-weight: 500;">Mitra T, Rahman J, Hwee M</span>, Ramos R, Liu H, Hartman T, Cross J, de Jesus M, Huse M, Longo V, Zanzonico P, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">MEK-dependent bioenergetic demand drives terminal CD8+ T cell exhaustion</p><p class="pub-authors"><span style="font-weight: 500;">Mitra T, Rahman J, Hwee M</span>, Ramos R, Liu H, Hartman T, Cross J, de Jesus M, Huse M, Longo V, Zanzonico P, <span style="font-weight: 500;">Vardhana SA</span></p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag metabolism">Metabolism</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.biorxiv.org/content/10.1101/2025.05.05.651897v2" class="pub-item" target="_blank>
         <span class="pub-year">2025</span>
-        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Disrupted priming within draining lymph nodes drives immune quiescence in gastric cancer</p><p class="pub-authors">Salehi S*, <span style="font-weight: 500;">Stroobant EE*</span>, ..., Shah SP*, Strong VE*, <span style="font-weight: 500;">Vardhana SA*</span></p></div>
+        <div class="pub-content"><p class="pub-journal">bioRxiv</p><p class="pub-title">Disrupted priming within draining lymph nodes drives immune quiescence in gastric cancer</p><p class="pub-authors">Salehi S*, <span style="font-weight: 500;">Stroobant EE*</span>, ..., Shah SP*, Strong VE*, <span style="font-weight: 500;">Vardhana SA*</span></p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag gastric">Gastric Cancer</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.nature.com/articles/s41591-024-03076-6" class="pub-item" target="_blank>
         <span class="pub-year">2024</span>
-        <div class="pub-content"><p class="pub-journal">Nature Medicine</p><p class="pub-title">Duvelisib plus romidepsin in relapsed/refractory T cell lymphomas: a phase 1b/2a trial</p><p class="pub-authors">Horwitz S*, ..., <span style="font-weight: 500;">Vardhana SA*</span></p></div>
+        <div class="pub-content"><p class="pub-journal">Nature Medicine</p><p class="pub-title">Duvelisib plus romidepsin in relapsed/refractory T cell lymphomas: a phase 1b/2a trial</p><p class="pub-authors">Horwitz S*, ..., <span style="font-weight: 500;">Vardhana SA*</span></p><div class="pub-tags"><span class="pub-tag lymphoma">Lymphoma</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.cell.com/immunity/fulltext/S1074-7613(22)00500-3" class="pub-item" target="_blank>
         <span class="pub-year">2022</span>
-        <div class="pub-content"><p class="pub-journal">Immunity</p><p class="pub-title">SARS-CoV-2 in immunocompromised individuals</p><p class="pub-authors">Dewolf S*, Laracy JC*, Perales MA, Kamboj M, van den Brink MRM, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <div class="pub-content"><p class="pub-journal">Immunity</p><p class="pub-title">SARS-CoV-2 in immunocompromised individuals</p><p class="pub-authors">Dewolf S*, Laracy JC*, Perales MA, Kamboj M, van den Brink MRM, <span style="font-weight: 500;">Vardhana SA</span></p><div class="pub-tags"><span class="pub-tag covid">COVID-19</span><span class="pub-tag lymphoma">Lymphoma</span><span class="pub-tag review">Review</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.cell.com/cancer-cell/fulltext/S1535-6108(22)00231-8" class="pub-item" target="_blank>
         <span class="pub-year">2022</span>
-        <div class="pub-content"><p class="pub-journal">Cancer Cell</p><p class="pub-title">Genome-wide CRISPR screens of T cell exhaustion identify chromatin remodeling factors that limit T cell persistence</p><p class="pub-authors">Belk JA, Yao W, ..., <span style="font-weight: 500;">Vardhana SA</span>, Satpathy AT</p></div>
+        <div class="pub-content"><p class="pub-journal">Cancer Cell</p><p class="pub-title">Genome-wide CRISPR screens of T cell exhaustion identify chromatin remodeling factors that limit T cell persistence</p><p class="pub-authors">Belk JA, Yao W, ..., <span style="font-weight: 500;">Vardhana SA</span>, Satpathy AT</p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag melanoma">Melanoma</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.cell.com/cancer-cell/fulltext/S1535-6108(22)00226-4" class="pub-item" target="_blank>
         <span class="pub-year">2022</span>
-        <div class="pub-content"><p class="pub-journal">Cancer Cell</p><p class="pub-title">Impaired humoral immunity is associated with prolonged COVID-19 despite robust CD8 T cell responses</p><p class="pub-authors">Lyudovyk O*, Kim JY*, <span style="font-weight: 500;">Qualls D*</span>, ..., Greenbaum B*, Huang AC*, <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <div class="pub-content"><p class="pub-journal">Cancer Cell</p><p class="pub-title">Impaired humoral immunity is associated with prolonged COVID-19 despite robust CD8 T cell responses</p><p class="pub-authors">Lyudovyk O*, Kim JY*, <span style="font-weight: 500;">Qualls D*</span>, ..., Greenbaum B*, Huang AC*, <span style="font-weight: 500;">Vardhana SA</span></p><div class="pub-tags"><span class="pub-tag covid">COVID-19</span><span class="pub-tag immunology">Immunology</span><span class="pub-tag lymphoma">Lymphoma</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://aacrjournals.org/cancerdiscovery/article/12/1/62/675624/Prolonged-SARS-CoV-2-Infection-in-Patients-with?guestAccessKey=" class="pub-item" target="_blank>
         <span class="pub-year">2022</span>
-        <div class="pub-content"><p class="pub-journal">Cancer Discovery</p><p class="pub-title">Prolonged SARS-CoV-2 Infection in Patients with Lymphoid Malignancies</p><p class="pub-authors"><span style="font-weight: 500;">Lee CY</span>, Shah MK, Hoyos D, ..., <span style="font-weight: 500;">Vardhana SA</span></p></div>
+        <div class="pub-content"><p class="pub-journal">Cancer Discovery</p><p class="pub-title">Prolonged SARS-CoV-2 Infection in Patients with Lymphoid Malignancies</p><p class="pub-authors"><span style="font-weight: 500;">Lee CY</span>, Shah MK, Hoyos D, ..., <span style="font-weight: 500;">Vardhana SA</span></p><div class="pub-tags"><span class="pub-tag covid">COVID-19</span><span class="pub-tag lymphoma">Lymphoma</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.nature.com/articles/s41591-021-01386-7" class="pub-item" target="_blank>
         <span class="pub-year">2021</span>
-        <div class="pub-content"><p class="pub-journal">Nature Medicine</p><p class="pub-title">CD8+ T cells contribute to survival in patients with COVID-19 and hematologic cancer</p><p class="pub-authors">Bange EM, Han NA, Wileyto P, ..., <span style="font-weight: 500;">Vardhana SA*</span>, Mamtani R*, Huang AC*</p></div>
+        <div class="pub-content"><p class="pub-journal">Nature Medicine</p><p class="pub-title">CD8+ T cells contribute to survival in patients with COVID-19 and hematologic cancer</p><p class="pub-authors">Bange EM, Han NA, Wileyto P, ..., <span style="font-weight: 500;">Vardhana SA*</span>, Mamtani R*, Huang AC*</p><div class="pub-tags"><span class="pub-tag covid">COVID-19</span><span class="pub-tag immunology">Immunology</span><span class="pub-tag lymphoma">Lymphoma</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.nature.com/articles/s41590-020-0725-2" class="pub-item" target="_blank>
         <span class="pub-year">2020</span>
-        <div class="pub-content"><p class="pub-journal">Nature Immunology</p><p class="pub-title">Impaired mitochondrial oxidative phosphorylation limits the self-renewal of T cells exposed to persistent antigen</p><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA, Hwee MA,</span> Berisa M, ..., Thompson CB</p></div>
+        <div class="pub-content"><p class="pub-journal">Nature Immunology</p><p class="pub-title">Impaired mitochondrial oxidative phosphorylation limits the self-renewal of T cells exposed to persistent antigen</p><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA, Hwee MA,</span> Berisa M, ..., Thompson CB</p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag metabolism">Metabolism</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.nature.com/articles/s42255-019-0082-3" class="pub-item" target="_blank>
         <span class="pub-year">2019</span>
-        <div class="pub-content"><p class="pub-journal">Nature Metabolism</p><p class="pub-title">Glutamine independence is a selectable feature of pluripotent stem cells</p><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA</span>, Arnold PK, Rosen BP, ..., Finley LWS</p></div>
+        <div class="pub-content"><p class="pub-journal">Nature Metabolism</p><p class="pub-title">Glutamine independence is a selectable feature of pluripotent stem cells</p><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA</span>, Arnold PK, Rosen BP, ..., Finley LWS</p><div class="pub-tags"><span class="pub-tag metabolism">Metabolism</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.cell.com/immunity/fulltext/S1074-7613(10)00130-5" class="pub-item" target="_blank>
         <span class="pub-year">2010</span>
-        <div class="pub-content"><p class="pub-journal">Immunity</p><p class="pub-title">Essential Role of Ubiquitin and TSG101 Protein in Formation and Function of the Central Supramolecular Activation Cluster</p><p class="pub-authors"><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA</span>, Choudhuri K, Varma R, Dustin ML</p></div>
+        <div class="pub-content"><p class="pub-journal">Immunity</p><p class="pub-title">Essential Role of Ubiquitin and TSG101 Protein in Formation and Function of the Central Supramolecular Activation Cluster</p><p class="pub-authors"><p class="pub-authors"><span style="font-weight: 500;">Vardhana SA</span>, Choudhuri K, Varma R, Dustin ML</p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
       <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-immunol-030409-101308" class="pub-item" target="_blank>
         <span class="pub-year">2010</span>
-        <div class="pub-content"><p class="pub-journal">Annual Review of Immunology</p><p class="pub-title">Functional Anatomy of T Cell Activation and Synapse Formation</p><p class="pub-authors">Fooksman DR, <span style="font-weight: 500;">Vardhana S*</span>, Vasiliver-Shamis G*, ..., Dustin ML</p></div>
+        <div class="pub-content"><p class="pub-journal">Annual Review of Immunology</p><p class="pub-title">Functional Anatomy of T Cell Activation and Synapse Formation</p><p class="pub-authors">Fooksman DR, <span style="font-weight: 500;">Vardhana S*</span>, Vasiliver-Shamis G*, ..., Dustin ML</p><div class="pub-tags"><span class="pub-tag immunology">Immunology</span><span class="pub-tag review">Review</span></div></div>
         <span class="pub-arrow">↗</span>
       </a>
     </div>
     <a href="https://pubmed.ncbi.nlm.nih.gov/?term=%22vardhana+s%22" class="pub-more" target="_blank" rel="noopener">All publications on PubMed ↗</a>
   </div>
 </section>
+
+<!-- LAB PHOTO BANNER
+     TO ADD YOUR PHOTO: replace the .lab-photo-placeholder div with:
+     <img src="lab-photo-2025.jpg" alt="The Vardhana Lab" />
+     Then update the caption text below.
+     Recommended: wide landscape photo, at least 1600px wide. -->
+<div class="lab-photo-banner">
+  <div class="lab-photo-placeholder">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="10" width="40" height="30" rx="3" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+      <circle cx="17" cy="22" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+      <path d="M4 34 L14 24 L22 32 L30 22 L44 34" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p>Lab photo coming soon</p>
+  </div>
+  <div class="lab-photo-caption">The Vardhana Laboratory · Memorial Sloan Kettering Cancer Center</div>
+</div>
 
 <!-- NEWS -->
 <section id="news">
@@ -700,14 +809,92 @@
     <div class="team-section">
       <p class="team-section-label">Alumni</p>
       <div class="alumni-row"><div><p class="alumni-name">Tiffany Merlinsky</p><p class="alumni-role-years">Graduate Student · 2021–2025</p></div><span class="alumni-now">Medical Student, Weill Cornell Medical College</span></div>
-      <div class="alumni-row"><div><p class="alumni-name">Emily Stroobant, MD</p><p class="alumni-role-years">Research Fellow · 2023–2025</p></div><span class="alumni-now">Surgery Resident, UMAss Chan Medical School </span></div>
+      <div class="alumni-row"><div><p class="alumni-name">Emily Stroobant, MD</p><p class="alumni-role-years">Research Fellow · 2023–2025</p></div><span class="alumni-now">Surgery Resident, UMass Chan Medical School </span></div>
       <div class="alumni-row"><div><p class="alumni-name">Miseker Abate, MD</p><p class="alumni-role-years">Research Fellow · 2021–2023</p></div><span class="alumni-now">Surgical Oncology Fellow, MSKCC</span></div>
       <div class="alumni-row"><div><p class="alumni-name">Madeline Hwee</p><p class="alumni-role-years">Research Technician · 2017–2021</p></div><span class="alumni-now">Speech Language Pathologist</span></div>
     </div>
+    <!-- COLLABORATORS
+         TO ADD A COLLABORATOR: copy one .collab-row block, paste at the bottom,
+         and fill in name, affiliation, description, and website link. -->
+    <div class="team-section">
+      <p class="team-section-label">Collaborators</p>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Chrysothemis Brown, MD, PhD</p>
+          <p class="collab-affil">MSKCC · Immuno-Oncology</p>
+          <p class="collab-desc">Regulation of immune homeostasis by antigen presenting cells</p>
+        </div>
+        <a href="https://www.thebrownlaboratory.com/" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Omar Abdel-Wahab, MD</p>
+          <p class="collab-affil">MSKCC · Molecular Pharmacology</p>
+          <p class="collab-desc">RNA biology in health and disease</p>
+        </div>
+        <a href="https://www.mskcc.org/research/ski/labs/omar-abdel-wahab" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Sohrab Shah, PhD</p>
+          <p class="collab-affil">MSKCC · Computational Oncology</p>
+          <p class="collab-desc">Leveraging single cell technologies to understand cancer evolution</p>
+        </div>
+        <a href="https://componcmsk.org/shah-lab/" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Benjamin Greenbaum, PhD</p>
+          <p class="collab-affil">MSKCC · Computational Oncology</p>
+          <p class="collab-desc">Self versus non-self recognition in cancer immunity</p>
+        </div>
+        <a href="https://componcmsk.org/greenbaum-lab/" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Christina Leslie, PhD</p>
+          <p class="collab-affil">MSKCC · Computational & Systems Biology</p>
+          <p class="collab-desc">Modeling cell-type specific transcriptional programs</p>
+        </div>
+        <a href="https://www.mskcc.org/research/ski/labs/christina-leslie" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Caleb Lareau, PhD</p>
+          <p class="collab-affil">MSKCC · Computational & Systems Biology</p>
+          <p class="collab-desc">Reshaping of the immune system during somatic evolution</p>
+        </div>
+        <a href="https://clareaulab.com/" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Ekaterina Vinogradova, PhD</p>
+          <p class="collab-affil">Rockefeller University</p>
+          <p class="collab-desc">Chemical proteomic approaches to understand the immune system in health and disease</p>
+        </div>
+        <a href="https://vinogradovalab.com/" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+
+      <div class="collab-row">
+        <div>
+          <p class="collab-name">Ansuman Satpathy, MD, PhD</p>
+          <p class="collab-affil">Stanford · Department of Pathology</p>
+          <p class="collab-desc">Applying genome-scale technologies to study fundamental principles of the immune system</p>
+        </div>
+        <a href="https://satpathylab.com/" target="_blank" class="collab-link">Website ↗</a>
+      </div>
+      
+    </div>
+
   </div>
 </section>
-
-<!-- CONTACT -->
 <section id="contact">
   <div class="section-inner">
     <p class="section-label">Get in Touch</p>

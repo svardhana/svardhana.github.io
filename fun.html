@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lab Life · Vardhana Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:    #1a2a3a;
+    --navy-md: #243447;
+    --navy-lt: #2e4260;
+    --gold:    #b89555;
+    --gold-lt: #d4ae72;
+    --cream:   #f7f4ef;
+    --white:   #ffffff;
+    --gray:    #6b7280;
+    --gray-lt: #e8e4dd;
+    --text:    #1a2232;
+    --serif:   'EB Garamond', Georgia, serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+    --nav-h:   68px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--text); background: var(--cream); font-size: 16px; line-height: 1.7; }
+
+  /* NAV — identical to main site */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; z-index: 100;
+    border-bottom: 1px solid rgba(184,149,85,0.2);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
+  .nav-logo-icon { height: 36px; width: auto; flex-shrink: 0; }
+  .nav-logo-text { font-family: var(--serif); font-size: 1.15rem; color: var(--white); letter-spacing: 0.02em; line-height: 1.2; }
+  .nav-logo-text span { display: block; font-size: 0.7rem; font-family: var(--sans); font-weight: 300; color: rgba(255,255,255,0.5); letter-spacing: 0.12em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.75); padding-bottom: 2px; border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); border-bottom-color: var(--gold-lt); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding-top: calc(var(--nav-h) + 72px);
+    padding-bottom: 64px;
+    padding-left: 48px;
+    padding-right: 48px;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 48px; right: 48px;
+    height: 1px;
+    background: rgba(184,149,85,0.2);
+  }
+  .page-header-inner { max-width: 1100px; margin: 0 auto; }
+  .page-header-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-lt); font-weight: 500; margin-bottom: 16px; font-family: var(--sans); }
+  .page-header-title { font-family: var(--serif); font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 400; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+  .page-header-subtitle { font-size: 1rem; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 560px; line-height: 1.75; }
+
+  /* MAIN CONTENT */
+  main { max-width: 1100px; margin: 0 auto; padding: 72px 48px 120px; }
+
+  /* PHOTO GRID */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  /* A "featured" card spans 2 columns */
+  .photo-card { background: var(--white); border: 1px solid var(--gray-lt); border-radius: 3px; overflow: hidden; transition: box-shadow 0.2s; }
+  .photo-card:hover { box-shadow: 0 6px 28px rgba(26,42,58,0.12); }
+  .photo-card.featured { grid-column: span 2; }
+
+  /*
+   * ADDING PHOTOS — instructions:
+   * 1. Save your photo as a JPG or PNG in the same folder as fun.html
+   * 2. Copy one of the .photo-card blocks below
+   * 3. Replace src="" with your filename (e.g., src="lab-retreat-2025.jpg")
+   * 4. Update the caption, date, and optional tag text
+   * 5. For a wide/featured card, add class="photo-card featured" to the div
+   *
+   * Photo size recommendations:
+   *   Standard card: at least 600×480px (landscape)
+   *   Featured card: at least 1200×600px (wide landscape)
+   */
+
+  .photo-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    background: var(--gray-lt);
+  }
+  .photo-card.featured .photo-img { aspect-ratio: 16/7; }
+
+  /* Placeholder shown when src is empty or image missing */
+  .photo-img-placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--gray-lt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .photo-card.featured .photo-img-placeholder { aspect-ratio: 16/7; }
+  .photo-img-placeholder p { font-size: 0.75rem; color: rgba(26,42,58,0.25); font-family: var(--sans); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .photo-body { padding: 18px 20px 22px; }
+
+  .photo-tag {
+    display: inline-block;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--white);
+    background: var(--gold);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-family: var(--sans);
+  }
+  .photo-tag.retreat  { background: var(--navy); }
+  .photo-tag.science  { background: var(--navy-lt); }
+  .photo-tag.milestone { background: #5c7a2e; }
+  .photo-tag.outing   { background: #8a5a2e; }
+
+  .photo-date { font-size: 0.72rem; color: var(--gray); letter-spacing: 0.06em; margin-bottom: 6px; font-family: var(--sans); }
+  .photo-caption { font-family: var(--serif); font-size: 1rem; color: var(--navy); line-height: 1.45; font-weight: 400; }
+  .photo-note { font-size: 0.82rem; color: var(--gray); font-weight: 300; margin-top: 4px; line-height: 1.6; }
+
+  /* SECTION DIVIDER */
+  .year-divider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 56px 0 32px;
+  }
+  .year-divider-text { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); font-weight: 400; white-space: nowrap; }
+  .year-divider-line { flex: 1; height: 1px; background: var(--gray-lt); }
+
+  /* FOOTER */
+  footer { background: var(--navy-md); padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.07); gap: 24px; }
+  .footer-text { font-size: 0.78rem; color: rgba(255,255,255,0.3); font-weight: 300; }
+  .footer-logos { display: flex; align-items: center; gap: 32px; }
+  .footer-logo-img { height: 48px; width: auto; opacity: 0.38; filter: brightness(0) invert(1); transition: opacity 0.2s; }
+  .footer-logo-img:hover { opacity: 0.65; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .page-header { padding-left: 24px; padding-right: 24px; }
+    main { padding: 48px 24px 80px; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .photo-card.featured { grid-column: span 2; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .photo-grid { grid-template-columns: 1fr; }
+    .photo-card.featured { grid-column: span 1; }
+    .photo-card.featured .photo-img,
+    .photo-card.featured .photo-img-placeholder { aspect-ratio: 4/3; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="178 231 240 310" xmlns="http://www.w3.org/2000/svg">
+      <path style="fill:#ffffff" d="M283.39,394.85v-29.61h-26.3v59.22c0,30.14,24.52,54.65,54.65,54.65s54.64-24.52,54.64-54.65v-59.22c0-30.14-24.5-54.65-54.64-54.65v26.29c15.64,0,28.35,12.73,28.35,28.37v59.22c0,15.64-12.72,28.37-28.35,28.37s-28.35-12.73-28.35-28.37v-29.6Z"/>
+      <rect style="fill:#ffffff" x="204.51" y="338.93" width="26.3" height="29.61"/>
+      <path style="fill:#45beab" d="M285.46,257.99v-26.3c-59.13,0-107.24,48.12-107.24,107.25h26.29c0-44.63,36.32-80.95,80.95-80.95"/>
+      <path style="fill:#45beab" d="M311.75,257.99v26.3c44.63,0,80.95,36.32,80.95,80.94v59.23c0,44.63-36.32,80.94-80.95,80.94s-80.94-36.3-80.94-80.94v-29.6h-26.3v29.6c0,59.12,48.1,107.24,107.24,107.24s107.24-48.12,107.24-107.24v-59.23c0-59.12-48.1-107.24-107.24-107.24"/>
+      <path style="fill:#45beab" d="M285.46,310.58v-26.3c-30.14,0-54.65,24.53-54.65,54.65h26.3c0-15.64,12.72-28.35,28.35-28.35"/>
+    </svg>
+    <div class="nav-logo-text">
+      Vardhana Lab
+      <span>Memorial Sloan Kettering Cancer Center</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#research">Research</a></li>
+    <li><a href="index.html#publications">Publications</a></li>
+    <li><a href="index.html#news">News</a></li>
+    <li><a href="index.html#people">People</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="fun.html" class="active">Lab Life</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <p class="page-header-label">Vardhana Laboratory</p>
+    <h1 class="page-header-title">Lab Life</h1>
+    <p class="page-header-subtitle">Science is better together. A look at the people, moments, and memories that make the Vardhana Lab what it is.</p>
+  </div>
+</div>
+
+<!-- PHOTO GRID -->
+<main>
+
+  <!--
+  ═══════════════════════════════════════════════════
+  HOW TO ADD A PHOTO:
+
+  1. Save your photo in the same folder as fun.html
+     (JPG or PNG, named clearly, e.g. retreat-2025.jpg)
+
+  2. Copy the block below and paste it into the grid:
+
+    <div class="photo-card">
+      <img src="your-photo.jpg" alt="brief description" class="photo-img"
+           onerror="this.style.background='#e8e4dd'" />
+      <div class="photo-body">
+        <span class="photo-tag">Social</span>
+        <p class="photo-date">June 2025</p>
+        <p class="photo-caption">Caption goes here</p>
+        <p class="photo-note">Optional extra note or names</p>
+      </div>
+    </div>
+
+  3. For a wide/featured card, change the opening div to:
+        <div class="photo-card featured">
+     and use a landscape photo (ideally 1200×600px or wider)
+
+  TAG OPTIONS (change the class to change the color):
+    class="photo-tag"           → gold   (general / social)
+    class="photo-tag retreat"   → navy   (lab retreats)
+    class="photo-tag science"   → slate  (science moments)
+    class="photo-tag milestone" → green  (awards, defenses, graduations)
+    class="photo-tag outing"    → brown  (outings, dinners, trips)
+
+  YEAR DIVIDERS: copy the .year-divider block to separate years
+  ═══════════════════════════════════════════════════
+  -->
+
+  <div class="year-divider">
+    <span class="year-divider-text">2026</span>
+    <div class="year-divider-line"></div>
+  </div>
+
+  <div class="photo-grid">
+
+    <!-- Featured wide card — replace with a group/lab photo -->
+    <div class="photo-card featured">
+      <div class="photo-img-placeholder">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="4" y="10" width="40" height="30" rx="3" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><circle cx="17" cy="22" r="5" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><path d="M4 34 L14 24 L22 32 L30 22 L44 34" stroke="rgba(26,42,58,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Add a photo</p>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag retreat">Retreat</span>
+        <p class="photo-date">2026</p>
+        <p class="photo-caption">Lab retreat — replace with caption</p>
+        <p class="photo-note">Replace with names or location</p>
+      </div>
+    </div>
+
+    <!-- Standard card -->
+    <div class="photo-card">
+      <div class="photo-img-placeholder">
+        <svg width="40" height="40" viewBox="0 0 48 48" fill="none"><rect x="4" y="10" width="40" height="30" rx="3" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><circle cx="17" cy="22" r="5" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><path d="M4 34 L14 24 L22 32 L30 22 L44 34" stroke="rgba(26,42,58,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Add a photo</p>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag milestone">Milestone</span>
+        <p class="photo-date">2026</p>
+        <p class="photo-caption">Milestone — replace with caption</p>
+        <p class="photo-note">Replace with names or context</p>
+      </div>
+    </div>
+
+  </div><!-- /photo-grid -->
+
+  <div class="year-divider">
+    <span class="year-divider-text">2025</span>
+    <div class="year-divider-line"></div>
+  </div>
+
+  <div class="photo-grid">
+
+    <div class="photo-card">
+      <img src="tiffany_grad.png" alt="Tiffany Merlinsky thesis defense" class="photo-img"
+           onerror="this.style.background='#e8e4dd'" />
+      <div class="photo-body">
+        <span class="photo-tag milestone">Milestone</span>
+        <p class="photo-date">November 2025</p>
+        <p class="photo-caption">Congratulations Dr. Merlinsky!</p>
+        <p class="photo-note">Tiffany became the first Vardhana Lab member to defend her thesis.</p>
+      </div>
+    </div>
+
+    <!-- Placeholder card — replace with a real 2025 photo -->
+    <div class="photo-card">
+      <div class="photo-img-placeholder">
+        <svg width="40" height="40" viewBox="0 0 48 48" fill="none"><rect x="4" y="10" width="40" height="30" rx="3" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><circle cx="17" cy="22" r="5" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><path d="M4 34 L14 24 L22 32 L30 22 L44 34" stroke="rgba(26,42,58,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Add a photo</p>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag">Social</span>
+        <p class="photo-date">2025</p>
+        <p class="photo-caption">Caption — replace with real event</p>
+      </div>
+    </div>
+
+    <div class="photo-card">
+      <div class="photo-img-placeholder">
+        <svg width="40" height="40" viewBox="0 0 48 48" fill="none"><rect x="4" y="10" width="40" height="30" rx="3" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><circle cx="17" cy="22" r="5" stroke="rgba(26,42,58,0.2)" stroke-width="1.5"/><path d="M4 34 L14 24 L22 32 L30 22 L44 34" stroke="rgba(26,42,58,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Add a photo</p>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag outing">Outing</span>
+        <p class="photo-date">2025</p>
+        <p class="photo-caption">Caption — replace with real event</p>
+      </div>
+    </div>
+
+  </div><!-- /photo-grid -->
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-text">© 2026 Vardhana Laboratory · Memorial Sloan Kettering Cancer Center · All rights reserved</p>
+  <div class="footer-logos">
+    <img src="msk.png" alt="Memorial Sloan Kettering" class="footer-logo-img" />
+    <img src="WCM.png" alt="Weill Cornell Medicine" class="footer-logo-img" />
+  </div>
+</footer>
+
+</body>
+</html>
