@@ -67,13 +67,14 @@
   .page-header-subtitle { font-size: 1rem; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 560px; line-height: 1.75; }
 
   /* MAIN CONTENT */
-  main { max-width: 1100px; margin: 0 auto; padding: 72px 48px 120px; }
+  main { max-width: 1400px; margin: 0 auto; padding: 72px 48px 120px; }
 
   /* PHOTO GRID */
-  .photo-grid {
+.photo-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+    margin-bottom: 24px;
   }
 
   /* A "featured" card spans 2 columns */
@@ -96,17 +97,21 @@
 
   .photo-img {
     width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
+    max-height: 420px;
+    min-height: 220px;
+    object-fit: contain;
     display: block;
     background: var(--gray-lt);
   }
-  .photo-card.featured .photo-img { aspect-ratio: 16/7; }
+  .photo-card.featured .photo-img {
+    max-height: 520px;
+  }
 
   /* Placeholder shown when src is empty or image missing */
   .photo-img-placeholder {
     width: 100%;
-    aspect-ratio: 4/3;
+    min-height: 220px;
+    max-height: 420px;
     background: var(--gray-lt);
     display: flex;
     align-items: center;
@@ -114,7 +119,7 @@
     flex-direction: column;
     gap: 10px;
   }
-  .photo-card.featured .photo-img-placeholder { aspect-ratio: 16/7; }
+  .photo-card.featured .photo-img-placeholder { max-height: 520px; }
   .photo-img-placeholder p { font-size: 0.75rem; color: rgba(26,42,58,0.25); font-family: var(--sans); letter-spacing: 0.08em; text-transform: uppercase; }
 
   .photo-body { padding: 18px 20px 22px; }
@@ -140,6 +145,49 @@
   .photo-date { font-size: 0.72rem; color: var(--gray); letter-spacing: 0.06em; margin-bottom: 6px; font-family: var(--sans); }
   .photo-caption { font-family: var(--serif); font-size: 1rem; color: var(--navy); line-height: 1.45; font-weight: 400; }
   .photo-note { font-size: 0.82rem; color: var(--gray); font-weight: 300; margin-top: 4px; line-height: 1.6; }
+
+  /* ── GALLERY CARD (multi-photo slideshow) ── */
+  .gallery-card { background: var(--white); border: 1px solid var(--gray-lt); border-radius: 3px; overflow: hidden; transition: box-shadow 0.2s; }
+  .gallery-card:hover { box-shadow: 0 6px 28px rgba(26,42,58,0.12); }
+  .gallery-card.featured { grid-column: span 2; }
+
+  .gallery-track-wrap { position: relative; overflow: hidden; background: var(--gray-lt); }
+  /* default: flexible height, no cropping */
+  .gallery-track-wrap { min-height: 220px; max-height: 420px; }
+  .gallery-card.featured .gallery-track-wrap { max-height: 520px; }
+
+  .gallery-track { display: flex; height: 100%; transition: transform 0.35s cubic-bezier(.4,0,.2,1); will-change: transform; }
+  .gallery-slide { flex: 0 0 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .gallery-slide img { width: 100%; height: 100%; max-height: 420px; object-fit: contain; display: block; }
+  .gallery-card.featured .gallery-slide img { max-height: 520px; }
+  .gallery-slide .photo-img-placeholder { width: 100%; height: 100%; aspect-ratio: unset; }
+
+  /* Prev / Next arrows */
+  .gallery-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(26,42,58,0.55); border: none; border-radius: 50%;
+    width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: #fff; opacity: 0; transition: opacity 0.2s, background 0.2s;
+    z-index: 2;
+  }
+  .gallery-track-wrap:hover .gallery-btn { opacity: 1; }
+  .gallery-btn:hover { background: rgba(26,42,58,0.82); }
+  .gallery-btn.prev { left: 8px; }
+  .gallery-btn.next { right: 8px; }
+  .gallery-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Dot indicators */
+  .gallery-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 2; }
+  .gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; padding: 0; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+  .gallery-dot.active { background: var(--white); transform: scale(1.25); }
+
+  /* Photo count badge (e.g. "1 / 4") */
+  .gallery-count {
+    position: absolute; top: 8px; right: 10px;
+    font-size: 0.65rem; letter-spacing: 0.08em; font-family: var(--sans);
+    color: rgba(255,255,255,0.85); background: rgba(26,42,58,0.5);
+    padding: 2px 7px; border-radius: 20px; z-index: 2;
+  }
 
   /* SECTION DIVIDER */
   .year-divider {
@@ -172,7 +220,7 @@
     .photo-grid { grid-template-columns: 1fr; }
     .photo-card.featured { grid-column: span 1; }
     .photo-card.featured .photo-img,
-    .photo-card.featured .photo-img-placeholder { aspect-ratio: 4/3; }
+    .photo-card.featured .photo-img-placeholder { max-height: 420px; }
   }
 </style>
 </head>
@@ -217,29 +265,64 @@
 
   <!--
   ═══════════════════════════════════════════════════
-  HOW TO ADD A PHOTO:
+  HOW TO ADD PHOTOS
+  ═══════════════════════════════════════════════════
 
-  1. Save your photo in the same folder as fun.html
-     (JPG or PNG, named clearly, e.g. retreat-2025.jpg)
-
-  2. Copy the block below and paste it into the grid:
-
-    <div class="photo-card">
-      <img src="your-photo.jpg" alt="brief description" class="photo-img"
-           onerror="this.style.background='#e8e4dd'" />
-      <div class="photo-body">
-        <span class="photo-tag">Social</span>
-        <p class="photo-date">June 2025</p>
-        <p class="photo-caption">Caption goes here</p>
-        <p class="photo-note">Optional extra note or names</p>
-      </div>
+  ── SINGLE PHOTO CARD ────────────────────────────
+  <div class="photo-card">
+    <img src="your-photo.jpg" alt="brief description" class="photo-img"
+         onerror="this.style.background='#e8e4dd'" />
+    <div class="photo-body">
+      <span class="photo-tag">Social</span>
+      <p class="photo-date">June 2025</p>
+      <p class="photo-caption">Caption goes here</p>
+      <p class="photo-note">Optional extra note or names</p>
     </div>
+  </div>
 
-  3. For a wide/featured card, change the opening div to:
-        <div class="photo-card featured">
-     and use a landscape photo (ideally 1200×600px or wider)
+  Add class="photo-card featured" for a wide 2-column card.
 
-  TAG OPTIONS (change the class to change the color):
+  ── GALLERY CARD (multiple photos, one caption) ──
+  Use this when you have several photos from the same event
+  (thesis defense, lab retreat, fundraiser, party, etc.).
+  The card shows a slideshow with arrow buttons and dot dots.
+
+  <div class="gallery-card">           ← or "gallery-card featured" for wide
+    <div class="gallery-track-wrap">
+      <div class="gallery-track">
+
+        [Repeat this block for each photo:]
+        <div class="gallery-slide">
+          <img src="event-photo-1.jpg" alt="Photo 1" />
+        </div>
+        <div class="gallery-slide">
+          <img src="event-photo-2.jpg" alt="Photo 2" />
+        </div>
+        <div class="gallery-slide">
+          <img src="event-photo-3.jpg" alt="Photo 3" />
+        </div>
+        [Add as many slides as you need]
+
+      </div>
+      [These are auto-generated — do not edit:]
+        <button class="gallery-btn prev" aria-label="Previous photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <button class="gallery-btn next" aria-label="Next photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+      <div class="gallery-dots"></div>
+      <span class="gallery-count"></span>
+    </div>
+    <div class="photo-body">
+      <span class="photo-tag milestone">Milestone</span>
+      <p class="photo-date">November 2025</p>
+      <p class="photo-caption">One caption for the whole event</p>
+      <p class="photo-note">Optional names / note</p>
+    </div>
+  </div>
+
+  ── TAG OPTIONS ──────────────────────────────────
     class="photo-tag"           → gold   (general / social)
     class="photo-tag retreat"   → navy   (lab retreats)
     class="photo-tag science"   → slate  (science moments)
@@ -251,9 +334,129 @@
   -->
 
   <div class="year-divider">
-    <span class="year-divider-text">Coming soon...</span>
+    <span class="year-divider-text">2026</span>
     <div class="year-divider-line"></div>
   </div>
+
+  <div class="photo-grid">
+
+  <div class="gallery-card featured">
+    <div class="gallery-track-wrap">
+      <div class="gallery-track">
+        <div class="gallery-slide">
+          <img src="fun/2026/CFS_2026.jpg" alt="Photo 1" />
+        </div>
+        <div class="gallery-slide">
+          <img src="fun/2026/CFS_2026_2.jpg" alt="Photo 2" />
+        </div>
+       
+      </div>
+        <button class="gallery-btn prev" aria-label="Previous photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <button class="gallery-btn next" aria-label="Next photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+              <div class="gallery-dots"></div>
+      <span class="gallery-count"></span>
+    </div>
+    <div class="photo-body">
+      <span class="photo-tag outing">Outing</span>
+      <p class="photo-date">March 2026</p>
+      <p class="photo-caption">Vardhana lab at Cycle for Survival 2026!</p>
+    </div>
+  </div>
+
+  </div><!-- /photo-grid -->
+
+<div class="year-divider">
+    <span class="year-divider-text">2025</span>
+    <div class="year-divider-line"></div>
+  </div>
+
+  <div class="photo-grid">
+
+    <div class="gallery-card">
+      <div class="gallery-track-wrap">
+        <div class="gallery-track">
+          <div class="gallery-slide">
+            <img src="fun/2025/merlinsky_defense_1125.jpg" alt="Tiffany Merlinsky thesis defense" />
+          </div>
+          <div class="gallery-slide">
+            <img src="fun/2025/tiffany_grad.png" alt="Tiffany Merlinsky thesis defense" />
+          </div>
+        </div>
+        <button class="gallery-btn prev" aria-label="Previous photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <button class="gallery-btn next" aria-label="Next photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+        <div class="gallery-dots"></div>
+        <span class="gallery-count"></span>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag milestone">Milestone</span>
+        <p class="photo-date">November 2025</p>
+        <p class="photo-caption">Congratulations Dr. Merlinsky!</p>
+        <p class="photo-note">Tiffany became the first Vardhana Lab member to defend her thesis.</p>
+      </div>
+    </div>
+
+    <div class="gallery-card">
+      <div class="gallery-track-wrap">
+        <div class="gallery-track">
+          <div class="gallery-slide">
+            <img src="fun/2025/goofoff_2025.png" alt="Goof Off 2025" />
+          </div>
+          <div class="gallery-slide">
+            <img src="fun/2025/goofoff_2025_2.jpg" alt="Goof Off 2025" />
+          </div>
+        </div>
+        <button class="gallery-btn prev" aria-label="Previous photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <button class="gallery-btn next" aria-label="Next photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+        <div class="gallery-dots"></div>
+        <span class="gallery-count"></span>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag outing">Outing</span>
+        <p class="photo-date">October 2025</p>
+        <p class="photo-caption">Vardhana Lab Goof-Off 2025!</p>
+        <p class="photo-note">The Vardhana Lab visits the Met, does some impressionist painting, visits John's of Bleeker Street, and (not pictured) does some karaoke!</p>
+      </div>
+    </div>
+
+    <div class="gallery-card featured">
+      <div class="gallery-track-wrap">
+        <div class="gallery-track">
+          <div class="gallery-slide">
+            <img src="fun/2025/CFS_2025_1.jpg" alt="CFS 2025" />
+          </div>
+          <div class="gallery-slide">
+            <img src="fun/2025/CFS_2025_2.jpg" alt="CFS 2025" />
+          </div>
+        </div>
+        <button class="gallery-btn prev" aria-label="Previous photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <button class="gallery-btn next" aria-label="Next photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+        <div class="gallery-dots"></div>
+        <span class="gallery-count"></span>
+      </div>
+      <div class="photo-body">
+        <span class="photo-tag outing">Outing</span>
+        <p class="photo-date">March 2025</p>
+        <p class="photo-caption">Vardhana Lab Cycle for Survival 2025!</p>
+      </div>
+    </div>
+
+  </div><!-- /photo-grid -->
 
 </main>
 
@@ -266,5 +469,72 @@
   </div>
 </footer>
 
+<script>
+/**
+ * Gallery card initialiser — runs automatically on page load.
+ * Works for every .gallery-card on the page, no extra setup needed.
+ */
+document.querySelectorAll('.gallery-card').forEach(card => {
+  const track  = card.querySelector('.gallery-track');
+  const slides = card.querySelectorAll('.gallery-slide');
+  const dotsEl = card.querySelector('.gallery-dots');
+  const countEl = card.querySelector('.gallery-count');
+  const prevBtn = card.querySelector('.gallery-btn.prev');
+  const nextBtn = card.querySelector('.gallery-btn.next');
+
+  if (!track || slides.length === 0) return;
+
+  let current = 0;
+  const total = slides.length;
+
+  // Build dots
+  const dots = Array.from({ length: total }, (_, i) => {
+    const d = document.createElement('button');
+    d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+    return d;
+  });
+
+  // Hide controls when there's only one slide
+  if (total <= 1) {
+    prevBtn && (prevBtn.style.display = 'none');
+    nextBtn && (nextBtn.style.display = 'none');
+    dotsEl  && (dotsEl.style.display  = 'none');
+    countEl && (countEl.style.display = 'none');
+    return;
+  }
+
+  function goTo(idx) {
+    current = (idx + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    if (countEl) countEl.textContent = (current + 1) + ' / ' + total;
+  }
+
+  prevBtn && prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn && nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  // Keyboard support when hovering the card
+  card.setAttribute('tabindex', '0');
+  card.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+
+  // Touch / swipe support
+  let touchStartX = null;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+    touchStartX = null;
+  });
+
+  goTo(0); // initialise count badge
+});
+</script>
 </body>
 </html>
